@@ -1,18 +1,20 @@
 package telex
 
 import (
-	"errors"
-
-//"encoding/json"
+	"encoding/json"
 )
 
+type UA []interface{} //Untyped Array
 type Telex struct {
-	headers  []*string
-	commands []*string
-	signals  []*string
-	body     []*string
+	Headers  UA
+	Commands UA
+	Signals  UA
+	Body     UA
+	Raw      UA
 }
 
-func TelexFromJson(json_in string) (*Telex, error) {
-	return &Telex{}, TelexParseError{err: errors.New("WTF is this?")}
+func TelexFromJson(json_in []byte) (*Telex, error) {
+	t := new(Telex)
+	err := json.Unmarshal(json_in, t.Raw)
+	return t, err
 }

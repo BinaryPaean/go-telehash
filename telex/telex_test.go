@@ -1,6 +1,7 @@
 package telex
 
 import (
+	"encoding/json"
 	"launchpad.net/gocheck"
 	"testing"
 )
@@ -16,9 +17,13 @@ func (s *TelexSuite) TestTelexFromJson(c *gocheck.C) {
       "_ring":43723,
       ".see":["5.6.7.8:23456","11.22.33.44:11223"],
     }`
-	tx, err := TelexFromJson(test_json)
+	tx, err := TelexFromJson([]byte(test_json))
 	c.Check(err, gocheck.IsNil)
-	h1 := &map[string]string{"_ring": "43723"}
-	var headers = [](*map[string]string){h1}
-	c.Check(tx.headers, gocheck.DeepEquals, headers)
+	headers := []interface{}{map[interface{}]interface{}{"_ring": 43723}}
+	commands := []interface{}{map[interface{}]interface{}{".see": []interface{}{"5.6.7.8:23456", "11.22.33.44:11223"}}}
+	c.Check(tx.Headers, gocheck.DeepEquals, headers)
+	c.Check(tx.Commands, gocheck.DeepEquals, commands)
+	var blank = new([]interface{})
+	err = json.Unmarshal([]byte(test_json), &blank)
+	c.Check(tx.Raw, gocheck.Equals, blank)
 }
