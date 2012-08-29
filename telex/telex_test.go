@@ -12,7 +12,7 @@ const (
       ".see":["5.6.7.8:23456","11.22.33.44:11223"]
     }`
 
-	command_telex_json = `{
+	signals_telex_json = `{
       "+end":"a9993e364706816aba3e25717850c26c9cd0d89d",
       "+foo":"0beec7b5ea3f0fdbc95d0dd47f3c5bc275da8a33"
     }`
@@ -47,7 +47,7 @@ func (s *TelexSuite) TestTelexFromJson(c *gocheck.C) {
 	c.Check(len(tx.Errors), gocheck.Equals, 0)
 	c.Check(tx.Headers.Ring, gocheck.DeepEquals, int64(43723))
 	c.Check(tx.Commands.See, gocheck.DeepEquals, []string{"5.6.7.8:23456", "11.22.33.44:11223"})
-	blank := new(JsonObject)
+	blank := new(jsonObject)
 	json.Unmarshal([]byte(simple_telex_json), &blank)
 	c.Check(tx.Raw, gocheck.DeepEquals, *blank)
 }
