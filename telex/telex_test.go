@@ -58,3 +58,9 @@ func (s *TelexSuite) TestNormalTelexFromJson(c *C) {
 	_, err := TelexFromJson([]byte(normal_telex_json))
 	c.Check(err, Equals, nil)
 }
+
+func (s *TelexSuite) TestToJsonReparseWorks(c *C) {
+	original, _ := TelexFromJson([]byte(normal_telex_json))
+	repeat, _ := TelexFromJson(original.ToJson())
+	c.Check(original, DeepEquals, repeat)
+}
