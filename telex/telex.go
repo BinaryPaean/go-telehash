@@ -89,23 +89,13 @@ func (t *Telex) extractFieldsFrom(j jsonObject) {
 	}
 }
 
-func (t *Telex) ToJson() []byte {
+func (t *Telex) ToJson() ([]byte, error) {
 	unified := make(jsonObject)
-	for k, v := range t.Headers {
-		unified[k] = v
+	telex_fields := [...]jsonObject{t.Headers, t.Commands, t.Signals, t.Body}
+	for _, kk := range telex_fields {
+		for k, v := range kk {
+			unified[k] = v
+		}
 	}
-
-	for k, v := range t.Commands {
-		unified[k] = v
-	}
-
-	for k, v := range t.Signals {
-		unified[k] = v
-	}
-
-	for k, v := range t.Body {
-		unified[k] = v
-	}
-	b, _ := json.Marshal(unified)
-	return b
+	return json.Marshal(unified)
 }

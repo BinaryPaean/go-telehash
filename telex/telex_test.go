@@ -61,6 +61,7 @@ func (s *TelexSuite) TestNormalTelexFromJson(c *C) {
 
 func (s *TelexSuite) TestToJsonReparseWorks(c *C) {
 	original, _ := TelexFromJson([]byte(normal_telex_json))
-	repeat, _ := TelexFromJson(original.ToJson())
+	original_json, _ := original.ToJson()
+	repeat, _ := TelexFromJson(original_json)
 	c.Check(original, DeepEquals, repeat)
 }
